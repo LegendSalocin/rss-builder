@@ -1,3 +1,5 @@
+import dev.cryptospace.rss.Crawler
+import dev.cryptospace.rss.entity.CrawlTarget
 import dev.cryptospace.rss.table.CrawlTargets
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
@@ -8,5 +10,9 @@ fun main() {
 
     transaction {
         SchemaUtils.create(CrawlTargets)
+
+        with(Crawler) {
+            CrawlTarget.all().forEach { it.open() }
+        }
     }
 }
