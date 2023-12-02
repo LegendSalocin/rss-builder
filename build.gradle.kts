@@ -27,7 +27,9 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
     implementation("org.jetbrains.exposed:exposed-kotlin-datetime:$exposedVersion")
 
-    implementation("com.microsoft.playwright:playwright:1.40.+")
+    implementation("org.seleniumhq.selenium:selenium-java:3.+")
+    implementation("org.seleniumhq.selenium:selenium-firefox-driver:3.+")
+//    implementation("io.github.bonigarcia:webdrivermanager:5.+")
 }
 
 tasks.test {

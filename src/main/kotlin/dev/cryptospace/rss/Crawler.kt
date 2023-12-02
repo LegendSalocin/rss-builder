@@ -1,24 +1,36 @@
 package dev.cryptospace.rss
 
-import com.microsoft.playwright.Playwright
 import dev.cryptospace.rss.entity.CrawlResult
 import dev.cryptospace.rss.entity.CrawlTarget
 import org.jetbrains.exposed.sql.statements.api.ExposedBlob
 import org.jetbrains.exposed.sql.transactions.transaction
+import org.openqa.selenium.firefox.FirefoxDriver
+import org.openqa.selenium.firefox.FirefoxOptions
+
+private const val GECKO_DRIVER_PROPERTY = "webdriver.gecko.driver"
 
 object Crawler {
 
-    private val browser = Playwright.create().chromium().launch()
-    private val page = browser.newPage()
+    init {
+        val driverPath = Crawler.javaClass.getResource("/geckodriver")?.path
+
+        if (driverPath != null) {
+            System.setProperty(GECKO_DRIVER_PROPERTY, driverPath)
+        }
+    }
+
+    private val webDriver = FirefoxDriver(FirefoxOptions().setHeadless(true))
 
     fun CrawlTarget.open() {
-        val response = page.navigate(url)
-        val responseBody = response.body()
+        @Suppress("kotlin:S6518") // just calling webdriver[url] would be ugly as the getter returns void
+        webDriver.get(url)
+
+        val responseBody = webDriver.title
 
         transaction {
             CrawlResult.new {
                 target = this@open
-                body = ExposedBlob(responseBody.inputStream())
+                body = ExposedBlob(responseBody.toByteArray())
             }
         }
     }

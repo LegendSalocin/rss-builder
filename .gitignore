@@ -41,4 +41,6 @@ bin/
 ### Mac OS ###
 .DS_Store
 
+# Just suppress the entire .idea folder as almost everything is related to user settings
+.idea/
 test.db
