@@ -10,7 +10,6 @@ import org.openqa.selenium.firefox.FirefoxOptions
 private const val GECKO_DRIVER_PROPERTY = "webdriver.gecko.driver"
 
 object Crawler {
-
     init {
         val driverPath = Crawler.javaClass.getResource("/geckodriver")?.path
 

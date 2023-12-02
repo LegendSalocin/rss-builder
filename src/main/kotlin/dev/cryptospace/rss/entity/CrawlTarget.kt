@@ -7,7 +7,6 @@ import org.jetbrains.exposed.dao.id.EntityID
 import java.util.UUID
 
 class CrawlTarget(id: EntityID<UUID>) : UUIDEntity(id) {
-
     var url by CrawlTargets.url
 
     companion object : UUIDEntityClass<CrawlTarget>(CrawlTargets)
