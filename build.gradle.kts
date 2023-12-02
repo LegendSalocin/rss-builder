@@ -1,6 +1,8 @@
 plugins {
     application
     kotlin("jvm") version "1.9.+"
+    id("org.jlleitschuh.gradle.ktlint") version "12.+"
+    id("org.sonarqube") version "3.5.+"
 }
 
 group = "org.example"
@@ -29,7 +31,6 @@ dependencies {
 
     implementation("org.seleniumhq.selenium:selenium-java:3.+")
     implementation("org.seleniumhq.selenium:selenium-firefox-driver:3.+")
-//    implementation("io.github.bonigarcia:webdrivermanager:5.+")
 }
 
 tasks.test {

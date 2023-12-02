@@ -11,9 +11,6 @@ fun main() {
 
     val targets = transaction {
         SchemaUtils.create(CrawlTargets, CrawlResults)
-        CrawlTarget.new {
-            url = "https://google.de"
-        }
         CrawlTarget.all().toList()
     }
 

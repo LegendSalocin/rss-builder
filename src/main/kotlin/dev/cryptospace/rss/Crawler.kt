@@ -25,7 +25,7 @@ object Crawler {
         @Suppress("kotlin:S6518") // just calling webdriver[url] would be ugly as the getter returns void
         webDriver.get(url)
 
-        val responseBody = webDriver.title
+        val responseBody = webDriver.pageSource
 
         transaction {
             CrawlResult.new {
