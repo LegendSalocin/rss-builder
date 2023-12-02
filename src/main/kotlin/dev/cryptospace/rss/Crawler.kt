@@ -21,7 +21,6 @@ object Crawler {
     private val webDriver = FirefoxDriver(FirefoxOptions().setHeadless(true))
 
     fun CrawlTarget.open() {
-        @Suppress("kotlin:S6518") // just calling webdriver[url] would be ugly as the getter returns void
         webDriver.get(url)
 
         val responseBody = webDriver.pageSource

@@ -2,7 +2,7 @@ plugins {
     application
     kotlin("jvm") version "1.9.+"
     id("org.jlleitschuh.gradle.ktlint") version "12.+"
-    id("org.sonarqube") version "3.5.+"
+    id("se.solrike.sonarlint") version "1.0.+"
 }
 
 group = "org.example"
@@ -20,6 +20,8 @@ val exposedVersion: String by project
 
 dependencies {
     testImplementation(kotlin("test"))
+
+    sonarlintPlugins("org.sonarsource.kotlin:sonar-kotlin-plugin:2.+")
 
     implementation("org.xerial:sqlite-jdbc:3.+")
 
