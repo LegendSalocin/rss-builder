@@ -8,6 +8,10 @@ import java.util.UUID
 
 class CrawlTarget(id: EntityID<UUID>) : UUIDEntity(id) {
     var url by CrawlTargets.url
+    var adBannerButtonSelector by CrawlTargets.adBannerButtonSelector
+    var itemSelector by CrawlTargets.itemSelector
+    var itemTitleXPath by CrawlTargets.itemTitleXPath
+    var itemLinkXPath by CrawlTargets.itemLinkXPath
 
     companion object : UUIDEntityClass<CrawlTarget>(CrawlTargets)
 }

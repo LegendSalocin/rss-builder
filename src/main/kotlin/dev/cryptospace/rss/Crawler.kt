@@ -1,9 +1,7 @@
 package dev.cryptospace.rss
 
-import dev.cryptospace.rss.entity.CrawlResult
 import dev.cryptospace.rss.entity.CrawlTarget
-import org.jetbrains.exposed.sql.statements.api.ExposedBlob
-import org.jetbrains.exposed.sql.transactions.transaction
+import org.openqa.selenium.By
 import org.openqa.selenium.firefox.FirefoxDriver
 import org.openqa.selenium.firefox.FirefoxOptions
 
@@ -18,19 +16,29 @@ object Crawler {
         }
     }
 
-    private val webDriver = FirefoxDriver(FirefoxOptions().setHeadless(true))
+    private val webDriver = FirefoxDriver(FirefoxOptions().setHeadless(false))
 
     fun CrawlTarget.open() {
         @Suppress("kotlin:S6518") // just calling webdriver[url] would be ugly as the getter returns void
         webDriver.get(url)
 
-        val responseBody = webDriver.pageSource
+        println(webDriver.pageSource)
 
-        transaction {
-            CrawlResult.new {
-                target = this@open
-                body = ExposedBlob(responseBody.toByteArray())
-            }
+        if (adBannerButtonSelector != null) {
+            webDriver.findElement(By.cssSelector(adBannerButtonSelector))
+                .click()
+        }
+
+        val items = webDriver.findElements(By.cssSelector(itemSelector))
+
+        items.forEach { item ->
+            val title = item.findElement(By.xpath(itemTitleXPath))
+            val link = item.findElement(By.xpath(itemLinkXPath))
+
+            println(item)
+            println(title)
+            println(link)
+            println()
         }
     }
 }
