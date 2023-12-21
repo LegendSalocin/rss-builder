@@ -1,6 +1,7 @@
 package dev.cryptospace.rss
 
 import dev.cryptospace.rss.entity.CrawlTarget
+import kotlinx.coroutines.delay
 import org.openqa.selenium.By
 import org.openqa.selenium.firefox.FirefoxDriver
 import org.openqa.selenium.firefox.FirefoxOptions
@@ -18,16 +19,14 @@ object Crawler {
 
     private val webDriver = FirefoxDriver(FirefoxOptions().setHeadless(false))
 
-    fun CrawlTarget.open() {
+    suspend fun CrawlTarget.open() {
         @Suppress("kotlin:S6518") // just calling webdriver[url] would be ugly as the getter returns void
         webDriver.get(url)
 
         println(webDriver.pageSource)
 
-        if (adBannerButtonSelector != null) {
-            webDriver.findElement(By.cssSelector(adBannerButtonSelector))
-                .click()
-        }
+        adBannerWaitTimeInMillis?.let { delay(it) }
+        adBannerButtonSelector?.let { webDriver.findElement(By.cssSelector(it)).click() }
 
         val items = webDriver.findElements(By.cssSelector(itemSelector))
 
