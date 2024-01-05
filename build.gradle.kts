@@ -5,7 +5,7 @@ plugins {
     id("se.solrike.sonarlint") version "1.0.+"
 }
 
-group = "org.example"
+group = "dev.cryptospace"
 version = "1.0-SNAPSHOT"
 
 application {

@@ -3,8 +3,10 @@ package dev.cryptospace.rss
 import dev.cryptospace.rss.entity.CrawlTarget
 import kotlinx.coroutines.delay
 import org.openqa.selenium.By
+import org.openqa.selenium.WebElement
 import org.openqa.selenium.firefox.FirefoxDriver
 import org.openqa.selenium.firefox.FirefoxOptions
+import kotlin.time.Duration.Companion.milliseconds
 
 private const val GECKO_DRIVER_PROPERTY = "webdriver.gecko.driver"
 
@@ -17,27 +19,18 @@ object Crawler {
         }
     }
 
-    private val webDriver = FirefoxDriver(FirefoxOptions().setHeadless(false))
+    private val webDriver = FirefoxDriver(FirefoxOptions().setHeadless(true))
 
     suspend fun CrawlTarget.open() {
-        @Suppress("kotlin:S6518") // just calling webdriver[url] would be ugly as the getter returns void
+        // just calling webdriver[url] would be ugly as the getter returns void
+        @Suppress("kotlin:S6518")
         webDriver.get(url)
 
-        println(webDriver.pageSource)
-
-        adBannerWaitTimeInMillis?.let { delay(it) }
+        adBannerWaitTimeInMillis?.let { delay(it.milliseconds) }
         adBannerButtonSelector?.let { webDriver.findElement(By.cssSelector(it)).click() }
+    }
 
-        val items = webDriver.findElements(By.cssSelector(itemSelector))
-
-        items.forEach { item ->
-            val title = item.findElement(By.xpath(itemTitleXPath))
-            val link = item.findElement(By.xpath(itemLinkXPath))
-
-            println(item)
-            println(title)
-            println(link)
-            println()
-        }
+    fun CrawlTarget.fetchItems(): List<WebElement> {
+        return webDriver.findElements(By.cssSelector(itemSelector))
     }
 }

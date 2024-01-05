@@ -1,7 +1,9 @@
+import dev.cryptospace.rss.Crawler.fetchItems
 import dev.cryptospace.rss.Crawler.open
 import dev.cryptospace.rss.entity.CrawlTarget
 import dev.cryptospace.rss.table.CrawlResults
 import dev.cryptospace.rss.table.CrawlTargets
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
@@ -27,10 +29,15 @@ fun main() = runBlocking {
         }
     }
 
-    val targets =
-        transaction {
-            CrawlTarget.all().toList()
-        }
+    val targets = transaction {
+        CrawlTarget.all().toList()
+    }
 
-    targets.forEach { it.open() }
+    targets.forEach { target ->
+        launch {
+            target.open()
+            val items = target.fetchItems()
+            println("Found ${items.size} items")
+        }
+    }
 }
